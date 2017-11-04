@@ -20,25 +20,24 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 4;
+    static int MAX_DEPTH = 6;
     static int choice = 0;
 
     public int chooseMove(int state[][], int round, boolean myMove, int depth){
         int validMoves[] = new int[64];
-        int numValidMoves = getValidMoves(round, state, validMoves);
+        int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me%2 + 1));
 
         Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
 
         if(numValidMoves == 0 || depth == MAX_DEPTH){
-//        if(numValidMoves == 0){
-            return calculateScore(!myMove);
+            return calculateScore(!myMove, state, round);
         }
 
         for(int move = 0; move < numValidMoves; move++){
             int row = validMoves[move] / 8;
             int col = validMoves[move] % 8;
-            state[row][col] = myMove ? me : 1;
-            scoreMap.put(move,chooseMove(state, round, !myMove, depth+1));
+            state[row][col] = myMove ? me : (me%2 + 1);
+            scoreMap.put(move,chooseMove(state, round+1, !myMove, depth+1));
             state[row][col] = 0;
         }
 
@@ -67,16 +66,43 @@ class RandomAI {
         }
     }
 
-    public int calculateScore(boolean myMove){
+    public int calculateScore(boolean myMove, int state[][], int round){
+        int corner_score = 1;
+        if (round <= 10)
+        {
+            corner_score = 3;
+        }
         int who = myMove ? me : (me%2 + 1);
         int score = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (state[i][j] == who) {
-                    score++;
+                    //if edge
+                    //edges are...
+//                    if(j == 0 || j == 8 || i == 0 || i == 8){
+//                        score += corner_score;
+//                    }
+//                    else{
+                        score++;
+//                    }
                 }
             }
         }
+
+
+
+        if(myMove){
+//            int[] dump = new int[64];
+//            score += getValidMoves(round, state, dump, who);
+        }
+        else
+        {
+            score *= -1;
+//            int[] dump = new int[64];
+//            score -= getValidMoves(round, state, dump, who);
+//
+        }
+
         return score;
     }
     
@@ -156,7 +182,7 @@ class RandomAI {
             for (i = 0; i < 8; i++) {
                 for (j = 0; j < 8; j++) {
                     if (state[i][j] == 0) {
-                        if (couldBe(state, i, j)) {
+                        if (couldBe(state, i, j, me)) {
                             validMoves[numValidMoves] = i*8 + j;
                             numValidMoves ++;
                             System.out.println(i + ", " + j);
@@ -174,7 +200,7 @@ class RandomAI {
     }
 
     // generates the set of valid moves for the player; returns a list of valid moves (validMoves)
-    private int getValidMoves(int round, int state[][], int[] validMoves) {
+    private int getValidMoves(int round, int state[][], int[] validMoves, int me) {
         int i, j;
 
         int numValidMoves = 0;
@@ -201,31 +227,23 @@ class RandomAI {
             }
         }
         else {
-            System.out.println("Valid Moves:");
             for (i = 0; i < 8; i++) {
                 for (j = 0; j < 8; j++) {
                     if (state[i][j] == 0) {
-                        if (couldBe(state, i, j)) {
+                        if (couldBe(state, i, j, me)) {
                             validMoves[numValidMoves] = i*8 + j;
                             numValidMoves ++;
-                            System.out.println(i + ", " + j);
                         }
                     }
                 }
             }
         }
 
-
-        //if (round > 3) {
-        //    System.out.println("checking out");
-        //    System.exit(1);
-        //}
-
         return numValidMoves;
     }
 
 
-    private boolean checkDirection(int state[][], int row, int col, int incx, int incy) {
+    private boolean checkDirection(int state[][], int row, int col, int incx, int incy, int me) {
         int sequence[] = new int[7];
         int seqLen;
         int i, r, c;
@@ -267,7 +285,7 @@ class RandomAI {
         return false;
     }
     
-    private boolean couldBe(int state[][], int row, int col) {
+    private boolean couldBe(int state[][], int row, int col, int me) {
         int incx, incy;
         
         for (incx = -1; incx < 2; incx++) {
@@ -275,7 +293,7 @@ class RandomAI {
                 if ((incx == 0) && (incy == 0))
                     continue;
             
-                if (checkDirection(state, row, col, incx, incy))
+                if (checkDirection(state, row, col, incx, incy, me))
                     return true;
             }
         }
