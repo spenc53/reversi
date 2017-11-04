@@ -20,7 +20,7 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 4;
     static int choice = 0;
 
     public int chooseMove(int state[][], int round, boolean myMove, int depth){
@@ -29,9 +29,9 @@ class RandomAI {
 
         Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
 
-//        if(numValidMoves == 0 || depth == MAX_DEPTH){
-        if(numValidMoves == 0){
-            return calculateScore();
+        if(numValidMoves == 0 || depth == MAX_DEPTH){
+//        if(numValidMoves == 0){
+            return calculateScore(!myMove);
         }
 
         for(int move = 0; move < numValidMoves; move++){
