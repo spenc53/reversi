@@ -121,7 +121,7 @@ class RandomAI {
 
         chooseMove(state, round, true,0);
         
-        return myMove;
+        return choice;
     }
     
     // generates the set of valid moves for the player; returns a list of valid moves (validMoves)
