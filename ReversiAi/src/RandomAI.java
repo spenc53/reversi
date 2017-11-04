@@ -20,12 +20,64 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    public void chooseMove(){
-        
+    static int MAX_DEPTH = 5;
+    static int choice = 0;
+
+    public int chooseMove(int state[][], int round, boolean myMove, int depth){
+        int validMoves[] = new int[64];
+        int numValidMoves = getValidMoves(round, state, validMoves);
+
+        Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
+
+//        if(numValidMoves == 0 || depth == MAX_DEPTH){
+        if(numValidMoves == 0){
+            return calculateScore();
+        }
+
+        for(int move = 0; move < numValidMoves; move++){
+            int row = validMoves[move] / 8;
+            int col = validMoves[move] % 8;
+            state[row][col] = myMove ? me : 1;
+            scoreMap.put(move,chooseMove(state, round, !myMove, depth+1));
+            state[row][col] = 0;
+        }
+
+        if(myMove){
+            int bestScore = Integer.MIN_VALUE;
+            for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
+            {
+                if(bestScore < pair.getValue()){
+                    bestScore = pair.getValue();
+                    choice = pair.getKey();
+                }
+            }
+            return bestScore;
+        }
+        else{
+            //Minimize their score
+            int bestScore = Integer.MAX_VALUE;
+            for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
+            {
+                if(bestScore > pair.getValue()){
+                    bestScore = pair.getValue();
+                    choice = pair.getKey();
+                }
+            }
+            return bestScore;
+        }
     }
 
-    public int calculateScore(){
-        return 0;
+    public int calculateScore(boolean myMove){
+        int who = myMove ? me : (me%2 + 1);
+        int score = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (state[i][j] == who) {
+                    score++;
+                }
+            }
+        }
+        return score;
     }
     
     // main function that (1) establishes a connection with the server, and then plays whenever it is this player's turn
@@ -66,6 +118,8 @@ class RandomAI {
     private int move() {
         // just move randomly for now
         int myMove = generator.nextInt(numValidMoves);
+
+        chooseMove(state, round, true,0);
         
         return myMove;
     }
@@ -73,7 +127,7 @@ class RandomAI {
     // generates the set of valid moves for the player; returns a list of valid moves (validMoves)
     private void getValidMoves(int round, int state[][]) {
         int i, j;
-        
+
         numValidMoves = 0;
         if (round < 4) {
             if (state[3][3] == 0) {
@@ -118,7 +172,59 @@ class RandomAI {
         //    System.exit(1);
         //}
     }
-    
+
+    // generates the set of valid moves for the player; returns a list of valid moves (validMoves)
+    private int getValidMoves(int round, int state[][], int[] validMoves) {
+        int i, j;
+
+        int numValidMoves = 0;
+        if (round < 4) {
+            if (state[3][3] == 0) {
+                validMoves[numValidMoves] = 3*8 + 3;
+                numValidMoves ++;
+            }
+            if (state[3][4] == 0) {
+                validMoves[numValidMoves] = 3*8 + 4;
+                numValidMoves ++;
+            }
+            if (state[4][3] == 0) {
+                validMoves[numValidMoves] = 4*8 + 3;
+                numValidMoves ++;
+            }
+            if (state[4][4] == 0) {
+                validMoves[numValidMoves] = 4*8 + 4;
+                numValidMoves ++;
+            }
+            System.out.println("Valid Moves:");
+            for (i = 0; i < numValidMoves; i++) {
+                System.out.println(validMoves[i] / 8 + ", " + validMoves[i] % 8);
+            }
+        }
+        else {
+            System.out.println("Valid Moves:");
+            for (i = 0; i < 8; i++) {
+                for (j = 0; j < 8; j++) {
+                    if (state[i][j] == 0) {
+                        if (couldBe(state, i, j)) {
+                            validMoves[numValidMoves] = i*8 + j;
+                            numValidMoves ++;
+                            System.out.println(i + ", " + j);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //if (round > 3) {
+        //    System.out.println("checking out");
+        //    System.exit(1);
+        //}
+
+        return numValidMoves;
+    }
+
+
     private boolean checkDirection(int state[][], int row, int col, int incx, int incy) {
         int sequence[] = new int[7];
         int seqLen;
