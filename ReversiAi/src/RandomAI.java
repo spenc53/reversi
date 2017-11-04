@@ -19,7 +19,14 @@ class RandomAI {
     
     int validMoves[] = new int[64];
     int numValidMoves;
-    
+
+    public void chooseMove(){
+        
+    }
+
+    public int calculateScore(){
+        return 0;
+    }
     
     // main function that (1) establishes a connection with the server, and then plays whenever it is this player's turn
     public RandomAI(int _me, String host) {
