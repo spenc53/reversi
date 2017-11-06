@@ -16,59 +16,120 @@ class RandomAI {
     int state[][] = new int[8][8]; // state[0][0] is the bottom left corner of the board (on the GUI)
     int turn = -1;
     int round;
+
+
+    static int R1 = 2;
+    static int R2 = -4;
+    static int R3 = 8;
+    static int R4 = -7;
+    static int R5 = 10;
+    int lookupScores[][] = {
+        {R5, R4, R3, R3, R3, R3, R4, R5},
+        {R4, R4, R2, R2, R2, R2, R4, R4},
+        {R3, R2, R1, R1, R1, R1, R2, R3},
+        {R3, R2, R1, R1, R1, R1, R2, R3},
+        {R3, R2, R1, R1, R1, R1, R2, R3},
+        {R3, R2, R1, R1, R1, R1, R2, R3},
+        {R4, R4, R2, R2, R2, R2, R4, R4},
+        {R5, R4, R3, R3, R3, R3, R4, R5}
+    };
     
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 6;
+    static int MAX_DEPTH = 10;
     static int choice = 0;
     static int BOARD_SIZE = 8;
 
-    public int chooseMove(int state[][], int round, boolean myMove, int depth){
+    public int minimax(int state[][], int round, boolean myMove, int depth, int alpha, int beta) { // player may be "computer" or "opponent"
         int validMoves[] = new int[64];
         int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
 
         Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
 
         if(numValidMoves == 0 || depth == MAX_DEPTH){
-            return calculateScore(!myMove, state, round);
+            return calculateScore(myMove, state, round);
         }
 
-        for(int move = 0; move < numValidMoves; move++){
-            int row = validMoves[move] / BOARD_SIZE;
-            int col = validMoves[move] % BOARD_SIZE;
-            state[row][col] = myMove ? me : (me%2 + 1);
-            scoreMap.put(move, chooseMove(state, round+1, !myMove, depth+1));
-            state[row][col] = 0;
-        }
+        if (myMove) {
+            for(int move = 0; move < numValidMoves; move++){
+                int row = validMoves[move] / BOARD_SIZE;
+                int col = validMoves[move] % BOARD_SIZE;
+                state[row][col] = myMove ? me : (me%2 + 1);
 
-        // if(myMove){
-            int bestScore = myMove ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-            for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
-            {
-                if((myMove && bestScore < pair.getValue()) || (!myMove && bestScore > pair.getValue())){
-                    bestScore = pair.getValue();
-                    choice = pair.getKey();
-                }
+                int score = minimax(state, round + 1, !myMove, depth + 1, alpha, beta);
+                state[row][col] = 0;
+                if (score > alpha) alpha = score;
+                if (alpha >= beta) break;
             }
-            return bestScore;
-        // }
-        // else{
-        //     //Minimize their score
-        //     int bestScore = Integer.MAX_VALUE;
-        //     for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
-        //     {
-        //         if(bestScore > pair.getValue()){
-        //             bestScore = pair.getValue();
-        //             choice = pair.getKey();
-        //         }
-        //     }
-        //     return bestScore;
-        // }
+            return alpha;
+        }
+        else {
+            for(int move = 0; move < numValidMoves; move++){
+                int row = validMoves[move] / BOARD_SIZE;
+                int col = validMoves[move] % BOARD_SIZE;
+                state[row][col] = myMove ? me : (me%2 + 1);
+
+                int score = minimax(state, round + 1, !myMove, depth + 1, alpha, beta);
+                state[row][col] = 0;
+                if (score < beta) beta = score;
+                if (alpha >= beta) break;
+            }
+            return beta;
+        }
     }
 
+    // public int chooseMove(int state[][], int round, boolean myMove, int depth){
+    //     int validMoves[] = new int[64];
+    //     int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
+
+    //     Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
+    //     if (round >= 20) {
+    //         MAX_DEPTH = 6;
+    //     }
+
+    //     if(numValidMoves == 0 || depth == MAX_DEPTH){
+    //         return calculateScore(!myMove, state, round);
+    //     }
+
+    //     for(int move = 0; move < numValidMoves; move++){
+    //         int row = validMoves[move] / BOARD_SIZE;
+    //         int col = validMoves[move] % BOARD_SIZE;
+    //         state[row][col] = myMove ? me : (me%2 + 1);
+    //         int score = chooseMove(state, round+1, !myMove, depth+1);
+    //         scoreMap.put(move, score);
+    //         // if(myMove && score > defaultScore) break;
+    //         // if(!myMove && score < defaultScore) break;
+    //         state[row][col] = 0;
+    //     }
+
+    //     // if(myMove){
+    //         int bestScore = myMove ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+    //         for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
+    //         {
+    //             if((myMove && bestScore < pair.getValue()) || (!myMove && bestScore > pair.getValue())){
+    //                 bestScore = pair.getValue();
+    //                 choice = pair.getKey();
+    //             }
+    //         }
+    //         return bestScore;
+    //     // }
+    //     // else{
+    //     //     //Minimize their score
+    //     //     int bestScore = Integer.MAX_VALUE;
+    //     //     for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
+    //     //     {
+    //     //         if(bestScore > pair.getValue()){
+    //     //             bestScore = pair.getValue();
+    //     //             choice = pair.getKey();
+    //     //         }
+    //     //     }
+    //     //     return bestScore;
+    //     // }
+    // }
+
     public int calculateScore(boolean myMove, int state[][], int round){
-        double percentOpenSpace = 20.0 / round;
+        // double percentOpenSpace = 20.0 / round;
         
         // System.out.println("percentOpenSpace: " + percentOpenSpace);
         // int corner_score = 1;
@@ -76,40 +137,34 @@ class RandomAI {
         // {
         //     corner_score = 3;
         // }
-        int who = myMove ? me : (me % 2 + 1);
+        int us = myMove ? me : (me % 2 + 1);
+        int them = myMove ? (me % 2 + 1) : me;
         double score = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                int positive = state[i][j] == who ? 1 : -1;
-                // if (positive == 1) {
-                    if (i == 1 || i == 7 || j == 1 || j == 7) {
-                        score -= positive * 25 * percentOpenSpace;
-                    }
-                    else if(j == 0 || j == BOARD_SIZE || i == 0 || i == BOARD_SIZE){
-                        score += positive * 25 * percentOpenSpace;
-
-                        if ((i == 0 || i == BOARD_SIZE) && (j == 0 || j == BOARD_SIZE)) {
-                            score += positive * 100 * percentOpenSpace;
-                        }
-                    }
-                    score += positive;
-                // }
+                    // If risky territory.
+                if (state[i][j] == us) {
+                    score += lookupScores[i][j];
+                    // score += 1;
+                    // score++;
+                }
+                else if(state[i][j] == them){
+                    // score -= lookupScores[i][j];
+                }
             }
         }
         int actual_score = (int)score;
 
-
-
+        int[] dump = new int[64];
+        score += getValidMoves(round, state, dump, us);
+        
         if(myMove){
-        //    int[] dump = new int[64];
-        //    score += getValidMoves(round, state, dump, who);
         }
         else
         {
-            actual_score *= -1;
-           int[] dump = new int[64];
-           score -= getValidMoves(round, state, dump, who);
-//
+            // actual_score *= -1;
+        //    int[] dump = new int[64];
+        //    score -= getValidMoves(round, state, dump, who);
         }
 
         return actual_score;
@@ -154,7 +209,7 @@ class RandomAI {
         // just move randomly for now
         // int myMove = generator.nextInt(numValidMoves);
 
-        chooseMove(state, round, true, 0);
+        minimax(state, round, true, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
         
         return choice;
     }
