@@ -22,10 +22,11 @@ class RandomAI {
 
     static int MAX_DEPTH = 6;
     static int choice = 0;
+    static int BOARD_SIZE = 8;
 
     public int chooseMove(int state[][], int round, boolean myMove, int depth){
         int validMoves[] = new int[64];
-        int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me%2 + 1));
+        int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
 
         Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
 
@@ -34,60 +35,65 @@ class RandomAI {
         }
 
         for(int move = 0; move < numValidMoves; move++){
-            int row = validMoves[move] / 8;
-            int col = validMoves[move] % 8;
+            int row = validMoves[move] / BOARD_SIZE;
+            int col = validMoves[move] % BOARD_SIZE;
             state[row][col] = myMove ? me : (me%2 + 1);
-            scoreMap.put(move,chooseMove(state, round+1, !myMove, depth+1));
+            scoreMap.put(move, chooseMove(state, round+1, !myMove, depth+1));
             state[row][col] = 0;
         }
 
-        if(myMove){
-            int bestScore = Integer.MIN_VALUE;
+        // if(myMove){
+            int bestScore = myMove ? Integer.MIN_VALUE : Integer.MAX_VALUE;
             for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
             {
-                if(bestScore < pair.getValue()){
+                if((myMove && bestScore < pair.getValue()) || (!myMove && bestScore > pair.getValue())){
                     bestScore = pair.getValue();
                     choice = pair.getKey();
                 }
             }
             return bestScore;
-        }
-        else{
-            //Minimize their score
-            int bestScore = Integer.MAX_VALUE;
-            for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
-            {
-                if(bestScore > pair.getValue()){
-                    bestScore = pair.getValue();
-                    choice = pair.getKey();
-                }
-            }
-            return bestScore;
-        }
+        // }
+        // else{
+        //     //Minimize their score
+        //     int bestScore = Integer.MAX_VALUE;
+        //     for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
+        //     {
+        //         if(bestScore > pair.getValue()){
+        //             bestScore = pair.getValue();
+        //             choice = pair.getKey();
+        //         }
+        //     }
+        //     return bestScore;
+        // }
     }
 
     public int calculateScore(boolean myMove, int state[][], int round){
-        int corner_score = 1;
-        if (round <= 10)
-        {
-            corner_score = 3;
-        }
-        int who = myMove ? me : (me%2 + 1);
-        int score = 0;
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (state[i][j] == who) {
-                    //if edge
-                    //edges are...
-//                    if(j == 0 || j == 8 || i == 0 || i == 8){
-//                        score += corner_score;
-//                    }
-//                    else{
-                        score++;
-//                    }
+        double percentOpenSpace = 1.0 / round;
+        
+        // System.out.println("percentOpenSpace: " + percentOpenSpace);
+        // int corner_score = 1;
+        // if (round <= 20)
+        // {
+        //     corner_score = 3;
+        // }
+        int who = myMove ? me : (me % 2 + 1);
+        double score = 0;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                int positive = state[i][j] == who ? 1 : -1;
+                if (positive == 1) {
+                    if(j == 0 || j == BOARD_SIZE || i == 0 || i == BOARD_SIZE){
+                        score += positive * 50 * percentOpenSpace;
+
+                        if ((i == 0 && (j == 0 || j == BOARD_SIZE)) || (i == BOARD_SIZE && (j == 0 || j == BOARD_SIZE))) {
+                            score += positive * 100 * percentOpenSpace;
+                        }
+                    }
+                    score += positive;
                 }
             }
         }
+        int actual_score = (int)score;
 
 
 
@@ -97,13 +103,13 @@ class RandomAI {
         }
         else
         {
-            score *= -1;
+            actual_score *= -1;
 //            int[] dump = new int[64];
 //            score -= getValidMoves(round, state, dump, who);
 //
         }
 
-        return score;
+        return actual_score;
     }
     
     // main function that (1) establishes a connection with the server, and then plays whenever it is this player's turn
