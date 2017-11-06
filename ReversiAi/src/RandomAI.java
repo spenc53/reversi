@@ -81,8 +81,11 @@ class RandomAI {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 int positive = state[i][j] == who ? 1 : -1;
-                if (positive == 1) {
-                    if(j == 0 || j == BOARD_SIZE || i == 0 || i == BOARD_SIZE){
+                // if (positive == 1) {
+                    if (i == 1 || i == 7 || j == 1 || j == 7) {
+                        score -= positive * 25 * percentOpenSpace;
+                    }
+                    else if(j == 0 || j == BOARD_SIZE || i == 0 || i == BOARD_SIZE){
                         score += positive * 25 * percentOpenSpace;
 
                         if ((i == 0 || i == BOARD_SIZE) && (j == 0 || j == BOARD_SIZE)) {
@@ -90,7 +93,7 @@ class RandomAI {
                         }
                     }
                     score += positive;
-                }
+                // }
             }
         }
         int actual_score = (int)score;
@@ -98,14 +101,14 @@ class RandomAI {
 
 
         if(myMove){
-//            int[] dump = new int[64];
-//            score += getValidMoves(round, state, dump, who);
+        //    int[] dump = new int[64];
+        //    score += getValidMoves(round, state, dump, who);
         }
         else
         {
             actual_score *= -1;
-//            int[] dump = new int[64];
-//            score -= getValidMoves(round, state, dump, who);
+           int[] dump = new int[64];
+           score -= getValidMoves(round, state, dump, who);
 //
         }
 
@@ -149,9 +152,9 @@ class RandomAI {
     // Note that "state" is a global variable 2D list that shows the state of the game
     private int move() {
         // just move randomly for now
-        int myMove = generator.nextInt(numValidMoves);
+        // int myMove = generator.nextInt(numValidMoves);
 
-        chooseMove(state, round, true,0);
+        chooseMove(state, round, true, 0);
         
         return choice;
     }
