@@ -68,7 +68,7 @@ class RandomAI {
     }
 
     public int calculateScore(boolean myMove, int state[][], int round){
-        double percentOpenSpace = 1.0 / round;
+        double percentOpenSpace = 20.0 / round;
         
         // System.out.println("percentOpenSpace: " + percentOpenSpace);
         // int corner_score = 1;
@@ -83,9 +83,9 @@ class RandomAI {
                 int positive = state[i][j] == who ? 1 : -1;
                 if (positive == 1) {
                     if(j == 0 || j == BOARD_SIZE || i == 0 || i == BOARD_SIZE){
-                        score += positive * 50 * percentOpenSpace;
+                        score += positive * 25 * percentOpenSpace;
 
-                        if ((i == 0 && (j == 0 || j == BOARD_SIZE)) || (i == BOARD_SIZE && (j == 0 || j == BOARD_SIZE))) {
+                        if ((i == 0 || i == BOARD_SIZE) && (j == 0 || j == BOARD_SIZE)) {
                             score += positive * 100 * percentOpenSpace;
                         }
                     }
