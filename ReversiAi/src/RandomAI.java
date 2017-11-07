@@ -18,26 +18,51 @@ class RandomAI {
     int round;
 
 
-    static int R1 = 2;
-    static int R2 = -4;
+//    static int R1 = 4;
+//    static int R2 = -4;
+//    static int R3 = 6;
+//    static int R4 = -8;
+//    static int R6 = -24;
+//    static int R5 = 99;
+//
+//    int lookupScores[][] = {
+//            {R5, R4, R3, R3, R3, R3, R4, R5},
+//            {R4, R6, R2, R2, R2, R2, R6, R4},
+//            {R3, R2, R1, R1, R1, R1, R2, R3},
+//            {R3, R2, R1, R1, R1, R1, R2, R3},
+//            {R3, R2, R1, R1, R1, R1, R2, R3},
+//            {R3, R2, R1, R1, R1, R1, R2, R3},
+//            {R4, R6, R2, R2, R2, R2, R6, R4},
+//            {R5, R4, R3, R3, R3, R3, R4, R5}
+//    };
+
+    static int R1 = 99;
+    static int R2 = -8;
     static int R3 = 8;
-    static int R4 = -7;
-    static int R5 = 10;
+    static int R4 = 6;
+    static int R5 = -24;
+    static int R6 = -4;
+    static int R7 = -3;
+    static int R8 = 7;
+    static int R9 = 4;
+    static int R10 = 0;
+
+
     int lookupScores[][] = {
-        {R5, R4, R3, R3, R3, R3, R4, R5},
-        {R4, R4, R2, R2, R2, R2, R4, R4},
-        {R3, R2, R1, R1, R1, R1, R2, R3},
-        {R3, R2, R1, R1, R1, R1, R2, R3},
-        {R3, R2, R1, R1, R1, R1, R2, R3},
-        {R3, R2, R1, R1, R1, R1, R2, R3},
-        {R4, R4, R2, R2, R2, R2, R4, R4},
-        {R5, R4, R3, R3, R3, R3, R4, R5}
+        {R1, R2, R3, R4, R4, R3, R2, R1},
+        {R2, R5, R6, R7, R7, R6, R5, R2},
+        {R3, R6, R8, R9, R9, R8, R6, R3},
+        {R4, R7, R9, R10, R10, R9, R7, R4},
+        {R4, R7, R9, R10, R10, R9, R7, R4},
+        {R3, R6, R8, R9, R9, R8, R6, R3},
+        {R2, R5, R6, R7, R7, R6, R5, R2},
+        {R1, R2, R3, R4, R4, R3, R2, R1}
     };
     
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 10;
+    static int MAX_DEPTH = 7;
     static int choice = 0;
     static int BOARD_SIZE = 8;
 
@@ -45,10 +70,11 @@ class RandomAI {
         int validMoves[] = new int[64];
         int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
 
-        Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
-
-        if(numValidMoves == 0 || depth == MAX_DEPTH){
-            return calculateScore(myMove, state, round);
+        if(depth == MAX_DEPTH){
+            return calculateScore(!myMove, state, round);
+        }
+        if(numValidMoves == 0){
+            return minimax(state, round+1, !myMove, depth+1, alpha, beta);
         }
 
         if (myMove) {
@@ -57,7 +83,13 @@ class RandomAI {
                 int col = validMoves[move] % BOARD_SIZE;
                 state[row][col] = myMove ? me : (me%2 + 1);
 
-                int score = minimax(state, round + 1, !myMove, depth + 1, alpha, beta);
+                int [][] newState = new int[state.length][];
+                for(int i = 0; i < state.length; i++)
+                    newState[i] = state[i].clone();
+
+                changeColors(newState, row, col, turn);
+
+                int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
                 state[row][col] = 0;
                 if (score > alpha) alpha = score;
                 if (alpha >= beta) break;
@@ -70,12 +102,107 @@ class RandomAI {
                 int col = validMoves[move] % BOARD_SIZE;
                 state[row][col] = myMove ? me : (me%2 + 1);
 
-                int score = minimax(state, round + 1, !myMove, depth + 1, alpha, beta);
+                int [][] newState = new int[state.length][];
+                for(int i = 0; i < state.length; i++)
+                    newState[i] = state[i].clone();
+
+                changeColors(newState, row, col, turn);
+
+                int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
                 state[row][col] = 0;
                 if (score < beta) beta = score;
                 if (alpha >= beta) break;
             }
             return beta;
+        }
+    }
+
+    public void printBoard(int state[][]){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                System.out.print(state[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+
+    public static void checkDirectionColor(int state[][],int row, int col, int incx, int incy, int turn) {
+        int sequence[] = new int[7];
+        int seqLen;
+        int i, r, c;
+
+        seqLen = 0;
+        for (i = 1; i < 8; i++) {
+            r = row+incy*i;
+            c = col+incx*i;
+
+            if ((r < 0) || (r > 7) || (c < 0) || (c > 7))
+                break;
+
+            sequence[seqLen] = state[r][c];
+            seqLen++;
+        }
+
+        int count = 0;
+        for (i = 0; i < seqLen; i++) {
+            if (turn == 0) {
+                if (sequence[i] == 2)
+                    count ++;
+                else {
+                    if ((sequence[i] == 1) && (count > 0))
+                        count = 20;
+                    break;
+                }
+            }
+            else {
+                if (sequence[i] == 1)
+                    count ++;
+                else {
+                    if ((sequence[i] == 2) && (count > 0))
+                        count = 20;
+                    break;
+                }
+            }
+        }
+
+        if (count > 10) {
+            if (turn == 0) {
+                i = 1;
+                r = row+incy*i;
+                c = col+incx*i;
+                while (state[r][c] == 2) {
+                    state[r][c] = 1;
+                    i++;
+                    r = row+incy*i;
+                    c = col+incx*i;
+                }
+            }
+            else {
+                i = 1;
+                r = row+incy*i;
+                c = col+incx*i;
+                while (state[r][c] == 1) {
+                    state[r][c] = 2;
+                    i++;
+                    r = row+incy*i;
+                    c = col+incx*i;
+                }
+            }
+        }
+    }
+
+    public static void changeColors(int state[][] ,int row, int col, int turn) {
+        int incx, incy;
+
+        for (incx = -1; incx < 2; incx++) {
+            for (incy = -1; incy < 2; incy++) {
+                if ((incx == 0) && (incy == 0))
+                    continue;
+
+                checkDirectionColor(state, row, col, incx, incy, turn);
+            }
         }
     }
 
@@ -137,8 +264,34 @@ class RandomAI {
         // {
         //     corner_score = 3;
         // }
+
+
         int us = myMove ? me : (me % 2 + 1);
         int them = myMove ? (me % 2 + 1) : me;
+
+
+//        if(state[0][0] == us){
+//            lookupScores[0][1] = 8;
+//            lookupScores[1][0] = 8;
+//            lookupScores[1][1] = 8;
+//        }
+//        if(state[0][0] == us){
+//            lookupScores[0][1] = 8;
+//            lookupScores[1][0] = 8;
+//            lookupScores[1][1] = 8;
+//        }
+//        if(state[0][0] == us){
+//            lookupScores[0][1] = 8;
+//            lookupScores[1][0] = 8;
+//            lookupScores[1][1] = 8;
+//        }
+//        if(state[0][0] == us){
+//            lookupScores[0][1] = 8;
+//            lookupScores[1][0] = 8;
+//            lookupScores[1][1] = 8;
+//        }
+
+
         double score = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -155,16 +308,14 @@ class RandomAI {
         }
         int actual_score = (int)score;
 
-        int[] dump = new int[64];
-        score += getValidMoves(round, state, dump, us);
+//        int[] dump = new int[64];
+//        actual_score += getValidMoves(round, state, dump, us);
         
         if(myMove){
         }
         else
         {
-            // actual_score *= -1;
-        //    int[] dump = new int[64];
-        //    score -= getValidMoves(round, state, dump, who);
+             actual_score *= -1;
         }
 
         return actual_score;

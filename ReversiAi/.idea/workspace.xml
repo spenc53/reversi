@@ -16,8 +16,8 @@
       <file leaf-file-name="RandomAI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/RandomAI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="87" column="17" lean-forward="true" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
+            <state relative-caret-position="75">
+              <caret line="276" column="11" lean-forward="true" selection-start-line="276" selection-start-column="11" selection-end-line="276" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -28,6 +28,11 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>getvalidMoves</find>
+      <find>minimax</find>
+      <find>move</find>
+      <find>print</find>
+      <find>printBoard</find>
+      <find>calculateScore</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -365,6 +370,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="e08169e1-9dec-4ad6-8a75-4e18826d79af" name="Default" comment="" />
@@ -414,7 +422,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/RandomAI.java</url>
+          <line>362</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -425,8 +441,16 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/RandomAI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="87" column="17" lean-forward="true" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
+        <state relative-caret-position="285">
+          <caret line="22" column="29" lean-forward="false" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RandomAI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="276" column="11" lean-forward="true" selection-start-line="276" selection-start-column="11" selection-end-line="276" selection-end-column="11" />
           <folding />
         </state>
       </provider>
