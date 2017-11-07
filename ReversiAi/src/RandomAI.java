@@ -17,6 +17,8 @@ class RandomAI {
     int turn = -1;
     int round;
 
+    static boolean found_corner = false;
+
 
 //    static int R1 = 4;
 //    static int R2 = -4;
@@ -36,12 +38,12 @@ class RandomAI {
 //            {R5, R4, R3, R3, R3, R3, R4, R5}
 //    };
 
-    static int R1 = 99;
-    static int R2 = -8;
+    static int R1 = 1000;
+    static int R2 = -18;
     static int R3 = 8;
     static int R4 = 6;
     static int R5 = -24;
-    static int R6 = -4;
+    static int R6 = 4;
     static int R7 = -3;
     static int R8 = 7;
     static int R9 = 4;
@@ -67,15 +69,16 @@ class RandomAI {
     static int BOARD_SIZE = 8;
 
     public int minimax(int state[][], int round, boolean myMove, int depth, int alpha, int beta) { // player may be "computer" or "opponent"
+
+        int c = 0;
         int validMoves[] = new int[64];
         int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
-
-        if(depth == MAX_DEPTH){
-            return calculateScore(!myMove, state, round);
+        if(depth == MAX_DEPTH || numValidMoves == 0){
+            return calculateScore(myMove, state, round);
         }
-        if(numValidMoves == 0){
-            return minimax(state, round+1, !myMove, depth+1, alpha, beta);
-        }
+//        if(){
+//            return minimax(state, round+1, !myMove, depth+1, alpha, beta);
+//        }
 
         if (myMove) {
             for(int move = 0; move < numValidMoves; move++){
@@ -87,13 +90,17 @@ class RandomAI {
                 for(int i = 0; i < state.length; i++)
                     newState[i] = state[i].clone();
 
-                changeColors(newState, row, col, turn);
+                changeColors(newState, row, col, myMove ? me : (me%2 + 1));
 
                 int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
                 state[row][col] = 0;
-                if (score > alpha) alpha = score;
+                if (score > alpha){
+                    alpha = score;
+                    c = move;
+                }
                 if (alpha >= beta) break;
             }
+            choice = c;
             return alpha;
         }
         else {
@@ -106,13 +113,18 @@ class RandomAI {
                 for(int i = 0; i < state.length; i++)
                     newState[i] = state[i].clone();
 
-                changeColors(newState, row, col, turn);
+                changeColors(newState, row, col, myMove ? me : (me%2 + 1));
+//                printBoard(newState);
 
                 int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
                 state[row][col] = 0;
-                if (score < beta) beta = score;
+                if (score < beta){
+                    choice = move;
+                    beta = score;
+                }
                 if (alpha >= beta) break;
             }
+            choice = c;
             return beta;
         }
     }
@@ -260,50 +272,57 @@ class RandomAI {
         int them = myMove ? (me % 2 + 1) : me;
 
 
-        int [][] newState = new int[state.length][];
-        for(int i = 0; i < state.length; i++)
+
+
+        int [][] newState = new int[lookupScores.length][];
+        for(int i = 0; i < lookupScores.length; i++)
             newState[i] = lookupScores[i].clone();
 
-        if(state[0][0] == us){
-            newState[0][1] = 8;
-            newState[1][0] = 8;
-            newState[1][1] = 8;
-        }
-        if(state[0][7] == us){
-            newState[1][7] = 8;
-            newState[0][6] = 8;
-            newState[1][6] = 8;
-        }
-        if(state[7][0] == us){
-            newState[7][1] = 8;
-            newState[6][0] = 8;
-            newState[6][1] = 8;
-        }
-        if(state[7][7] == us){
-            newState[7][6] = 8;
-            newState[6][7] = 8;
-            newState[6][6] = 8;
-        }
+//        if(state[0][0] == us){
+//            newState[0][1] = 8;
+//            newState[1][0] = 8;
+//            newState[1][1] = 8;
+//        }
+//        if(state[0][7] == us){
+//            newState[1][7] = 8;
+//            newState[0][6] = 8;
+//            newState[1][6] = 8;
+//        }
+//        if(state[7][0] == us){
+//            newState[7][1] = 8;
+//            newState[6][0] = 8;
+//            newState[6][1] = 8;
+//        }
+//        if(state[7][7] == us){
+//            newState[7][6] = 8;
+//            newState[6][7] = 8;
+//            newState[6][6] = 8;
+//        }
+
+        int actual_score = 0;
+//        int[] dump = new int[64];
+//        if(round <= 30){
+//            actual_score -= getValidMoves(round, state, dump, them);
+//        }
+//        if (round <= 20){
+//            actual_score += getValidMoves(round, state, dump, us);
+//        }
 
 
-        double score = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                     // If risky territory.
                 if (state[i][j] == us) {
-                    score += newState[i][j];
+                    actual_score += newState[i][j];
                 }
-//                else if(state[i][j] == them){
-//                     score -= newState[i][j];
-//                }
+                else if(state[i][j] == them){
+                    actual_score -= newState[i][j];
+                }
             }
         }
-        int actual_score = (int)score;
 
-//        int[] dump = new int[64];
-//        actual_score += getValidMoves(round, state, dump, us);
-        
         if(myMove){
+//             actual_score *= -1;
         }
         else
         {
