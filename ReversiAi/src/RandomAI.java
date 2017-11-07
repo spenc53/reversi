@@ -256,40 +256,34 @@ class RandomAI {
     // }
 
     public int calculateScore(boolean myMove, int state[][], int round){
-        // double percentOpenSpace = 20.0 / round;
-        
-        // System.out.println("percentOpenSpace: " + percentOpenSpace);
-        // int corner_score = 1;
-        // if (round <= 20)
-        // {
-        //     corner_score = 3;
-        // }
-
-
         int us = myMove ? me : (me % 2 + 1);
         int them = myMove ? (me % 2 + 1) : me;
 
 
-//        if(state[0][0] == us){
-//            lookupScores[0][1] = 8;
-//            lookupScores[1][0] = 8;
-//            lookupScores[1][1] = 8;
-//        }
-//        if(state[0][0] == us){
-//            lookupScores[0][1] = 8;
-//            lookupScores[1][0] = 8;
-//            lookupScores[1][1] = 8;
-//        }
-//        if(state[0][0] == us){
-//            lookupScores[0][1] = 8;
-//            lookupScores[1][0] = 8;
-//            lookupScores[1][1] = 8;
-//        }
-//        if(state[0][0] == us){
-//            lookupScores[0][1] = 8;
-//            lookupScores[1][0] = 8;
-//            lookupScores[1][1] = 8;
-//        }
+        int [][] newState = new int[state.length][];
+        for(int i = 0; i < state.length; i++)
+            newState[i] = lookupScores[i].clone();
+
+        if(state[0][0] == us){
+            newState[0][1] = 8;
+            newState[1][0] = 8;
+            newState[1][1] = 8;
+        }
+        if(state[0][7] == us){
+            newState[1][7] = 8;
+            newState[0][6] = 8;
+            newState[1][6] = 8;
+        }
+        if(state[7][0] == us){
+            newState[7][1] = 8;
+            newState[6][0] = 8;
+            newState[6][1] = 8;
+        }
+        if(state[7][7] == us){
+            newState[7][6] = 8;
+            newState[6][7] = 8;
+            newState[6][6] = 8;
+        }
 
 
         double score = 0;
@@ -297,13 +291,11 @@ class RandomAI {
             for (int j = 0; j < BOARD_SIZE; j++) {
                     // If risky territory.
                 if (state[i][j] == us) {
-                    score += lookupScores[i][j];
-                    // score += 1;
-                    // score++;
+                    score += newState[i][j];
                 }
-                else if(state[i][j] == them){
-                    // score -= lookupScores[i][j];
-                }
+//                else if(state[i][j] == them){
+//                     score -= newState[i][j];
+//                }
             }
         }
         int actual_score = (int)score;
