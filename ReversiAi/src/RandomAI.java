@@ -64,7 +64,7 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 8;
     static int choice = 0;
     static int BOARD_SIZE = 8;
 
@@ -278,26 +278,26 @@ class RandomAI {
         for(int i = 0; i < lookupScores.length; i++)
             newState[i] = lookupScores[i].clone();
 
-//        if(this.state[0][0] == us){
-//            newState[0][1] = 8;
-//            newState[1][0] = 8;
-//            newState[1][1] = 8;
-//        }
-//        if(this.state[0][7] == us){
-//            newState[1][7] = 8;
-//            newState[0][6] = 8;
-//            newState[1][6] = 8;
-//        }
-//        if(this.state[7][0] == us){
-//            newState[7][1] = 8;
-//            newState[6][0] = 8;
-//            newState[6][1] = 8;
-//        }
-//        if(this.state[7][7] == us){
-//            newState[7][6] = 8;
-//            newState[6][7] = 8;
-//            newState[6][6] = 8;
-//        }
+       if(this.state[0][0] == us){
+           newState[0][1] = 8;
+           newState[1][0] = 8;
+           newState[1][1] = 8;
+       }
+       if(this.state[0][7] == us){
+           newState[1][7] = 8;
+           newState[0][6] = 8;
+           newState[1][6] = 8;
+       }
+       if(this.state[7][0] == us){
+           newState[7][1] = 8;
+           newState[6][0] = 8;
+           newState[6][1] = 8;
+       }
+       if(this.state[7][7] == us){
+           newState[7][6] = 8;
+           newState[6][7] = 8;
+           newState[6][6] = 8;
+       }
 
         int actual_score = 0;
 //        int[] dump = new int[64];
