@@ -119,7 +119,7 @@ class RandomAI {
                 int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
                 state[row][col] = 0;
                 if (score < beta){
-                    choice = move;
+                    c = move;
                     beta = score;
                 }
                 if (alpha >= beta) break;
