@@ -38,17 +38,40 @@ class RandomAI {
 //            {R5, R4, R3, R3, R3, R3, R4, R5}
 //    };
 
-    static int R1 = 1000;
-    static int R2 = -18;
+    // static int R1 = 1000;
+    // static int R2 = -18;
+    // static int R3 = 8;
+    // static int R4 = 6;
+    // static int R5 = -24;
+    // static int R6 = 4;
+    // static int R7 = -3;
+    // static int R8 = 7;
+    // static int R9 = 4;
+    // static int R10 = 0;
+
+    // // Brian's values.
+    // static int R1 = 75;
+    // static int R2 = -1;
+    // static int R3 = 8;
+    // static int R4 = 8;
+    // static int R5 = -8;
+    // static int R6 = 0;
+    // static int R7 = 0;
+    // static int R8 = 0;
+    // static int R9 = 0;
+    // static int R10 = 0;
+
+    // Vaishnavi's values.
+    static int R1 = 99;
+    static int R2 = -8;
     static int R3 = 8;
     static int R4 = 6;
     static int R5 = -24;
-    static int R6 = 4;
+    static int R6 = -4;
     static int R7 = -3;
     static int R8 = 7;
     static int R9 = 4;
     static int R10 = 0;
-
 
     int lookupScores[][] = {
         {R1, R2, R3, R4, R4, R3, R2, R1},
@@ -64,7 +87,7 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 8;
     static int choice = 0;
     static int BOARD_SIZE = 8;
 
@@ -267,37 +290,57 @@ class RandomAI {
     //     // }
     // }
 
+    public static double root(double num, double root)
+    {
+        return Math.pow(Math.E, Math.log(num)/root);
+    }
+
+    public void adjustCorners(int round) {
+        int r1 = R1 - R1 * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+        int r2 = R2 - R2 * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+        int r3 = R3 - R3 * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+        int r4 = R4 - R4 * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+
+        lookupScores = new int[][]{
+            {r1, r2, r3, r4, r4, r3, r2, r1},
+            {r2, R5, R6, R7, R7, R6, R5, r2},
+            {r3, R6, R8, R9, R9, R8, R6, r3},
+            {r4, R7, R9, R10, R10, R9, R7, r4},
+            {r4, R7, R9, R10, R10, R9, R7, r4},
+            {r3, R6, R8, R9, R9, R8, R6, r3},
+            {r2, R5, R6, R7, R7, R6, R5, r2},
+            {r1, r2, r3, r4, r4, r3, r2, r1}
+        };
+    }
+
     public int calculateScore(boolean myMove, int state[][], int round){
         int us = myMove ? me : (me % 2 + 1);
         int them = myMove ? (me % 2 + 1) : me;
 
+    //     int [][] newState = new int[lookupScores.length][];
+    //     for(int i = 0; i < lookupScores.length; i++)
+    //         newState[i] = lookupScores[i].clone();
 
-
-
-        int [][] newState = new int[lookupScores.length][];
-        for(int i = 0; i < lookupScores.length; i++)
-            newState[i] = lookupScores[i].clone();
-
-//        if(this.state[0][0] == us){
-//            newState[0][1] = 8;
-//            newState[1][0] = 8;
-//            newState[1][1] = 8;
-//        }
-//        if(this.state[0][7] == us){
-//            newState[1][7] = 8;
-//            newState[0][6] = 8;
-//            newState[1][6] = 8;
-//        }
-//        if(this.state[7][0] == us){
-//            newState[7][1] = 8;
-//            newState[6][0] = 8;
-//            newState[6][1] = 8;
-//        }
-//        if(this.state[7][7] == us){
-//            newState[7][6] = 8;
-//            newState[6][7] = 8;
-//            newState[6][6] = 8;
-//        }
+    //    if(this.state[0][0] == us){
+    //        newState[0][1] = 8;
+    //        newState[1][0] = 8;
+    //        newState[1][1] = 8;
+    //    }
+    //    if(this.state[0][7] == us){
+    //        newState[1][7] = 8;
+    //        newState[0][6] = 8;
+    //        newState[1][6] = 8;
+    //    }
+    //    if(this.state[7][0] == us){
+    //        newState[7][1] = 8;
+    //        newState[6][0] = 8;
+    //        newState[6][1] = 8;
+    //    }
+    //    if(this.state[7][7] == us){
+    //        newState[7][6] = 8;
+    //        newState[6][7] = 8;
+    //        newState[6][6] = 8;
+    //    }
 
         int actual_score = 0;
 //        int[] dump = new int[64];
@@ -308,12 +351,14 @@ class RandomAI {
 //            actual_score += getValidMoves(round, state, dump, us);
 //        }
 
+        // adjustCorners(round);
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                     // If risky territory.
                 if (state[i][j] == us) {
-                    actual_score += newState[i][j];
+                    // actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+                    actual_score += lookupScores[i][j];
                 }
 //                else if(state[i][j] == them){
 //                    actual_score -= newState[i][j];
