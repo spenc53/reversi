@@ -62,7 +62,7 @@ class RandomAI {
     // static int R10 = 0;
 
     // Vaishnavi's values.
-    static int R1 = 99;
+    static int R1 = 100;
     static int R2 = -8;
     static int R3 = 8;
     static int R4 = 6;
@@ -71,7 +71,7 @@ class RandomAI {
     static int R7 = -3;
     static int R8 = 7;
     static int R9 = 4;
-    static int R10 = 0;
+    static int R10 = 1;
 
     int lookupScores[][] = {
         {R1, R2, R3, R4, R4, R3, R2, R1},
@@ -317,32 +317,33 @@ class RandomAI {
         int us = myMove ? me : (me % 2 + 1);
         int them = myMove ? (me % 2 + 1) : me;
 
-    //     int [][] newState = new int[lookupScores.length][];
-    //     for(int i = 0; i < lookupScores.length; i++)
-    //         newState[i] = lookupScores[i].clone();
-
-    //    if(this.state[0][0] == us){
-    //        newState[0][1] = 8;
-    //        newState[1][0] = 8;
-    //        newState[1][1] = 8;
-    //    }
-    //    if(this.state[0][7] == us){
-    //        newState[1][7] = 8;
-    //        newState[0][6] = 8;
-    //        newState[1][6] = 8;
-    //    }
-    //    if(this.state[7][0] == us){
-    //        newState[7][1] = 8;
-    //        newState[6][0] = 8;
-    //        newState[6][1] = 8;
-    //    }
-    //    if(this.state[7][7] == us){
-    //        newState[7][6] = 8;
-    //        newState[6][7] = 8;
-    //        newState[6][6] = 8;
-    //    }
+         int [][] newState = new int[lookupScores.length][];
+         for(int i = 0; i < lookupScores.length; i++)
+             newState[i] = lookupScores[i].clone();
+        int pnt = 100;
+        if(this.state[0][0] == us || this.state[0][0] == them){
+            newState[0][1] = pnt;
+            newState[1][0] = pnt;
+            newState[1][1] = pnt;
+        }
+        if(this.state[0][7] == us || this.state[0][7] == them){
+            newState[1][7] = pnt;
+            newState[0][6] = pnt;
+            newState[1][6] = pnt;
+        }
+        if(this.state[7][0] == us || this.state[7][0] == them){
+            newState[7][1] = pnt;
+            newState[6][0] = pnt;
+            newState[6][1] = pnt;
+        }
+        if(this.state[7][7] == us || this.state[7][7] == them){
+            newState[7][6] = pnt;
+            newState[6][7] = pnt;
+            newState[6][6] = pnt;
+        }
 
         int actual_score = 0;
+        
 //        int[] dump = new int[64];
 //        if(round <= 30){
 //            actual_score -= getValidMoves(round, state, dump, them);
@@ -358,11 +359,24 @@ class RandomAI {
                     // If risky territory.
                 if (state[i][j] == us) {
                     // actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
-                    actual_score += lookupScores[i][j];
+//                    if(round >= 40)
+//                    {
+//                        actual_score += 1;
+//                    }
+//                    else
+//                    {
+                        actual_score += newState[i][j];
+//                    }
                 }
-//                else if(state[i][j] == them){
-//                    actual_score -= newState[i][j];
-//                }
+                else if(state[i][j] == them){
+//                    if(round >= 40){
+//                        actual_score -= 1;
+//                    }
+//                    else
+//                    {
+                        actual_score -= newState[i][j];
+//                    }
+                }
             }
         }
 
