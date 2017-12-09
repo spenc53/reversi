@@ -320,10 +320,10 @@ class RandomAI {
         int actual_score = 0;
         
         int[] dump = new int[64];
-        if(round <= 30){
+        if(round <= 40){
             actual_score -= getValidMoves(round, state, dump, them);
         }
-        if (round <= 20){
+        if (round <= 30){
             actual_score += getValidMoves(round, state, dump, us);
         }
 
@@ -380,6 +380,18 @@ class RandomAI {
             if (turn == me) {
                 System.out.println("Move");
                 getValidMoves(round, state);
+
+                if(numValidMoves >= 8)
+                {
+                    MAX_DEPTH = 6;
+                }
+                else if (numValidMoves >= 4){
+                    MAX_DEPTH = 8;
+                }
+                else if (numValidMoves >= 2)
+                {
+                    MAX_DEPTH = 9;
+                }
                 
                 myMove = move();
                 //myMove = generator.nextInt(numValidMoves);        // select a move randomly
