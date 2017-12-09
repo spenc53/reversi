@@ -62,7 +62,7 @@ class RandomAI {
     // static int R10 = 0;
 
     // Vaishnavi's values.
-    static int R1 = 100;
+    static int R1 = 24;
     static int R2 = -8;
     static int R3 = 8;
     static int R4 = 6;
@@ -320,26 +320,52 @@ class RandomAI {
          int [][] newState = new int[lookupScores.length][];
          for(int i = 0; i < lookupScores.length; i++)
              newState[i] = lookupScores[i].clone();
-        int pnt = 100;
-        if(this.state[0][0] == us || this.state[0][0] == them){
+        int pnt = 24;
+        if(this.state[0][0] == us){
             newState[0][1] = pnt;
             newState[1][0] = pnt;
             newState[1][1] = pnt;
         }
-        if(this.state[0][7] == us || this.state[0][7] == them){
+        if(this.state[0][0] == them){
+            newState[0][1] = (-1*pnt);
+            newState[1][0] = (-1*pnt);
+            newState[1][1] = (-1*pnt);
+        }
+
+
+        if(this.state[0][7] == us ){
             newState[1][7] = pnt;
             newState[0][6] = pnt;
             newState[1][6] = pnt;
         }
-        if(this.state[7][0] == us || this.state[7][0] == them){
+        if(this.state[0][7] == them){
+            newState[1][7] = (-1*pnt);
+            newState[0][6] = (-1*pnt);
+            newState[1][6] = (-1*pnt);
+        }
+
+
+        if(this.state[7][0] == us){
             newState[7][1] = pnt;
             newState[6][0] = pnt;
             newState[6][1] = pnt;
         }
-        if(this.state[7][7] == us || this.state[7][7] == them){
+        if(this.state[7][0] == them){
+            newState[7][1] = (-1*pnt);
+            newState[6][0] = (-1*pnt);
+            newState[6][1] = (-1*pnt);
+        }
+
+
+        if(this.state[7][7] == us){
             newState[7][6] = pnt;
             newState[6][7] = pnt;
             newState[6][6] = pnt;
+        }
+        if(this.state[7][7] == them){
+            newState[7][6] = (-1*pnt);
+            newState[6][7] = (-1*pnt);
+            newState[6][6] = (-1*pnt);
         }
 
         int actual_score = 0;
