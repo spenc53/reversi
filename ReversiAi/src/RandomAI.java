@@ -199,7 +199,7 @@ class RandomAI {
         }
 
         if (count > 10) {
-            if (turn == 0) {
+            if (turn == 1) {
                 i = 1;
                 r = row+incy*i;
                 c = col+incx*i;
