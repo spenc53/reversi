@@ -49,19 +49,19 @@ class RandomAI {
     // static int R9 = 4;
     // static int R10 = 0;
 
-    // // Brian's values.
-    // static int R1 = 75;
-    // static int R2 = -1;
-    // static int R3 = 8;
-    // static int R4 = 8;
-    // static int R5 = -8;
-    // static int R6 = 0;
-    // static int R7 = 0;
-    // static int R8 = 0;
-    // static int R9 = 0;
-    // static int R10 = 0;
+//     // Brian's values.
+//     static int R1 = 75;
+//     static int R2 = -1;
+//     static int R3 = 8;
+//     static int R4 = 8;
+//     static int R5 = -8;
+//     static int R6 = 0;
+//     static int R7 = 0;
+//     static int R8 = 0;
+//     static int R9 = 0;
+//     static int R10 = 0;
 
-    // Vaishnavi's values.
+//     Vaishnavi's values.
     static int R1 = 24;
     static int R2 = -8;
     static int R3 = 8;
@@ -71,7 +71,7 @@ class RandomAI {
     static int R7 = -3;
     static int R8 = 7;
     static int R9 = 4;
-    static int R10 = 1;
+    static int R10 = 0;
 
     int lookupScores[][] = {
         {R1, R2, R3, R4, R4, R3, R2, R1},
@@ -99,20 +99,17 @@ class RandomAI {
         if(depth == MAX_DEPTH || numValidMoves == 0){
             return calculateScore(myMove, state, round);
         }
-//        if(){
-//            return minimax(state, round+1, !myMove, depth+1, alpha, beta);
-//        }
 
         if (myMove) {
             for(int move = 0; move < numValidMoves; move++){
                 int row = validMoves[move] / BOARD_SIZE;
                 int col = validMoves[move] % BOARD_SIZE;
-                state[row][col] = myMove ? me : (me%2 + 1);
 
                 int [][] newState = new int[state.length][];
                 for(int i = 0; i < state.length; i++)
                     newState[i] = state[i].clone();
 
+                newState[row][col] = myMove ? me : (me%2 + 1);
                 changeColors(newState, row, col, myMove ? me : (me%2 + 1));
 
                 int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
@@ -130,17 +127,16 @@ class RandomAI {
             for(int move = 0; move < numValidMoves; move++){
                 int row = validMoves[move] / BOARD_SIZE;
                 int col = validMoves[move] % BOARD_SIZE;
-                state[row][col] = myMove ? me : (me%2 + 1);
 
                 int [][] newState = new int[state.length][];
                 for(int i = 0; i < state.length; i++)
                     newState[i] = state[i].clone();
 
+                newState[row][col] = myMove ? me : (me%2 + 1);
                 changeColors(newState, row, col, myMove ? me : (me%2 + 1));
 //                printBoard(newState);
 
                 int score = minimax(newState, round + 1, !myMove, depth + 1, alpha, beta);
-                state[row][col] = 0;
                 if (score < beta){
                     c = move;
                     beta = score;
@@ -182,7 +178,7 @@ class RandomAI {
 
         int count = 0;
         for (i = 0; i < seqLen; i++) {
-            if (turn == 0) {
+            if (turn == 1) {
                 if (sequence[i] == 2)
                     count ++;
                 else {
@@ -241,55 +237,6 @@ class RandomAI {
         }
     }
 
-    // public int chooseMove(int state[][], int round, boolean myMove, int depth){
-    //     int validMoves[] = new int[64];
-    //     int numValidMoves = getValidMoves(round, state, validMoves, myMove ? me : (me %  2 + 1));
-
-    //     Map<Integer, Integer> scoreMap = new HashMap<>(); //(move, score)
-    //     if (round >= 20) {
-    //         MAX_DEPTH = 6;
-    //     }
-
-    //     if(numValidMoves == 0 || depth == MAX_DEPTH){
-    //         return calculateScore(!myMove, state, round);
-    //     }
-
-    //     for(int move = 0; move < numValidMoves; move++){
-    //         int row = validMoves[move] / BOARD_SIZE;
-    //         int col = validMoves[move] % BOARD_SIZE;
-    //         state[row][col] = myMove ? me : (me%2 + 1);
-    //         int score = chooseMove(state, round+1, !myMove, depth+1);
-    //         scoreMap.put(move, score);
-    //         // if(myMove && score > defaultScore) break;
-    //         // if(!myMove && score < defaultScore) break;
-    //         state[row][col] = 0;
-    //     }
-
-    //     // if(myMove){
-    //         int bestScore = myMove ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-    //         for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
-    //         {
-    //             if((myMove && bestScore < pair.getValue()) || (!myMove && bestScore > pair.getValue())){
-    //                 bestScore = pair.getValue();
-    //                 choice = pair.getKey();
-    //             }
-    //         }
-    //         return bestScore;
-    //     // }
-    //     // else{
-    //     //     //Minimize their score
-    //     //     int bestScore = Integer.MAX_VALUE;
-    //     //     for(Map.Entry<Integer, Integer> pair : scoreMap.entrySet())
-    //     //     {
-    //     //         if(bestScore > pair.getValue()){
-    //     //             bestScore = pair.getValue();
-    //     //             choice = pair.getKey();
-    //     //         }
-    //     //     }
-    //     //     return bestScore;
-    //     // }
-    // }
-
     public static double root(double num, double root)
     {
         return Math.pow(Math.E, Math.log(num)/root);
@@ -320,16 +267,18 @@ class RandomAI {
          int [][] newState = new int[lookupScores.length][];
          for(int i = 0; i < lookupScores.length; i++)
              newState[i] = lookupScores[i].clone();
-        int pnt = 24;
+
+        int pnt = 100;
+        int otherpnt = 100;
         if(this.state[0][0] == us){
             newState[0][1] = pnt;
             newState[1][0] = pnt;
             newState[1][1] = pnt;
         }
         if(this.state[0][0] == them){
-            newState[0][1] = (-1*pnt);
-            newState[1][0] = (-1*pnt);
-            newState[1][1] = (-1*pnt);
+            newState[0][1] = otherpnt;
+            newState[1][0] = otherpnt;
+            newState[1][1] = otherpnt;
         }
 
 
@@ -339,9 +288,9 @@ class RandomAI {
             newState[1][6] = pnt;
         }
         if(this.state[0][7] == them){
-            newState[1][7] = (-1*pnt);
-            newState[0][6] = (-1*pnt);
-            newState[1][6] = (-1*pnt);
+            newState[1][7] = otherpnt;
+            newState[0][6] = otherpnt;
+            newState[1][6] = otherpnt;
         }
 
 
@@ -351,9 +300,9 @@ class RandomAI {
             newState[6][1] = pnt;
         }
         if(this.state[7][0] == them){
-            newState[7][1] = (-1*pnt);
-            newState[6][0] = (-1*pnt);
-            newState[6][1] = (-1*pnt);
+            newState[7][1] = otherpnt;
+            newState[6][0] = otherpnt;
+            newState[6][1] = otherpnt;
         }
 
 
@@ -363,9 +312,9 @@ class RandomAI {
             newState[6][6] = pnt;
         }
         if(this.state[7][7] == them){
-            newState[7][6] = (-1*pnt);
-            newState[6][7] = (-1*pnt);
-            newState[6][6] = (-1*pnt);
+            newState[7][6] = otherpnt;
+            newState[6][7] = otherpnt;
+            newState[6][6] = otherpnt;
         }
 
         int actual_score = 0;
@@ -384,8 +333,8 @@ class RandomAI {
             for (int j = 0; j < BOARD_SIZE; j++) {
                     // If risky territory.
                 if (state[i][j] == us) {
-                    // actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
-//                    if(round >= 40)
+                     actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+//                    if(round >= 55)
 //                    {
 //                        actual_score += 1;
 //                    }
@@ -395,7 +344,7 @@ class RandomAI {
 //                    }
                 }
                 else if(state[i][j] == them){
-//                    if(round >= 40){
+//                    if(round >= 55){
 //                        actual_score -= 1;
 //                    }
 //                    else

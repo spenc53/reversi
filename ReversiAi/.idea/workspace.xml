@@ -16,10 +16,10 @@
       <file leaf-file-name="RandomAI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/RandomAI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="367" column="37" lean-forward="false" selection-start-line="367" selection-start-column="37" selection-end-line="367" selection-end-column="37" />
+            <state relative-caret-position="-14">
+              <caret line="180" column="25" lean-forward="false" selection-start-line="180" selection-start-column="25" selection-end-line="180" selection-end-column="25" />
               <folding>
-                <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+                <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
               </folding>
             </state>
           </provider>
@@ -39,6 +39,7 @@
       <find>calculateScore</find>
       <find>getValidMoves</find>
       <find>ValidMoves</find>
+      <find>changeColor</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -428,7 +429,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="15" />
+      <option name="time" value="17" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -442,7 +443,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -452,7 +453,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -462,7 +463,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -472,7 +473,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -482,7 +483,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -492,7 +493,7 @@
         <state relative-caret-position="4320">
           <caret line="291" column="0" lean-forward="true" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -502,7 +503,7 @@
         <state relative-caret-position="285">
           <caret line="22" column="29" lean-forward="false" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -512,7 +513,7 @@
         <state relative-caret-position="293">
           <caret line="66" column="28" lean-forward="false" selection-start-line="66" selection-start-column="28" selection-end-line="66" selection-end-column="28" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -522,7 +523,7 @@
         <state relative-caret-position="4320">
           <caret line="291" column="0" lean-forward="true" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
@@ -532,17 +533,17 @@
         <state relative-caret-position="285">
           <caret line="22" column="29" lean-forward="false" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RandomAI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="367" column="37" lean-forward="false" selection-start-line="367" selection-start-column="37" selection-end-line="367" selection-end-column="37" />
+        <state relative-caret-position="-14">
+          <caret line="180" column="25" lean-forward="false" selection-start-line="180" selection-start-column="25" selection-end-line="180" selection-end-column="25" />
           <folding>
-            <marker date="1512780786000" expanded="true" signature="12433:12735" ph="//..." />
+            <marker date="1512784354000" expanded="true" signature="10328:10630" ph="//..." />
           </folding>
         </state>
       </provider>
