@@ -50,28 +50,28 @@ class RandomAI {
     // static int R10 = 0;
 
 //     // Brian's values.
-//     static int R1 = 75;
-//     static int R2 = -1;
-//     static int R3 = 8;
-//     static int R4 = 8;
-//     static int R5 = -8;
-//     static int R6 = 0;
-//     static int R7 = 0;
-//     static int R8 = 0;
-//     static int R9 = 0;
-//     static int R10 = 0;
+     static int R1 = 75;
+     static int R2 = -1;
+     static int R3 = 8;
+     static int R4 = 8;
+     static int R5 = -8;
+     static int R6 = 0;
+     static int R7 = 0;
+     static int R8 = 0;
+     static int R9 = 0;
+     static int R10 = 0;
 
-//     Vaishnavi's values.
-    static int R1 = 24;
-    static int R2 = -8;
-    static int R3 = 8;
-    static int R4 = 6;
-    static int R5 = -24;
-    static int R6 = -4;
-    static int R7 = -3;
-    static int R8 = 7;
-    static int R9 = 4;
-    static int R10 = 0;
+////     Vaishnavi's values.
+//    static int R1 = 24;
+//    static int R2 = -8;
+//    static int R3 = 8;
+//    static int R4 = 6;
+//    static int R5 = -24;
+//    static int R6 = -4;
+//    static int R7 = -3;
+//    static int R8 = 7;
+//    static int R9 = 4;
+//    static int R10 = 0;
 
     int lookupScores[][] = {
         {R1, R2, R3, R4, R4, R3, R2, R1},
@@ -87,7 +87,7 @@ class RandomAI {
     int validMoves[] = new int[64];
     int numValidMoves;
 
-    static int MAX_DEPTH = 8;
+    static int MAX_DEPTH = 6;
     static int choice = 0;
     static int BOARD_SIZE = 8;
 
@@ -268,64 +268,64 @@ class RandomAI {
          for(int i = 0; i < lookupScores.length; i++)
              newState[i] = lookupScores[i].clone();
 
-        int pnt = 100;
-        int otherpnt = 100;
-        if(this.state[0][0] == us){
-            newState[0][1] = pnt;
-            newState[1][0] = pnt;
-            newState[1][1] = pnt;
-        }
-        if(this.state[0][0] == them){
-            newState[0][1] = otherpnt;
-            newState[1][0] = otherpnt;
-            newState[1][1] = otherpnt;
-        }
-
-
-        if(this.state[0][7] == us ){
-            newState[1][7] = pnt;
-            newState[0][6] = pnt;
-            newState[1][6] = pnt;
-        }
-        if(this.state[0][7] == them){
-            newState[1][7] = otherpnt;
-            newState[0][6] = otherpnt;
-            newState[1][6] = otherpnt;
-        }
-
-
-        if(this.state[7][0] == us){
-            newState[7][1] = pnt;
-            newState[6][0] = pnt;
-            newState[6][1] = pnt;
-        }
-        if(this.state[7][0] == them){
-            newState[7][1] = otherpnt;
-            newState[6][0] = otherpnt;
-            newState[6][1] = otherpnt;
-        }
-
-
-        if(this.state[7][7] == us){
-            newState[7][6] = pnt;
-            newState[6][7] = pnt;
-            newState[6][6] = pnt;
-        }
-        if(this.state[7][7] == them){
-            newState[7][6] = otherpnt;
-            newState[6][7] = otherpnt;
-            newState[6][6] = otherpnt;
-        }
+//        int pnt = 75;
+//        int otherpnt = 75;
+//        if(this.state[0][0] == us){
+//            newState[0][1] = pnt;
+//            newState[1][0] = pnt;
+//            newState[1][1] = pnt;
+//        }
+//        if(this.state[0][0] == them){
+//            newState[0][1] = otherpnt;
+//            newState[1][0] = otherpnt;
+//            newState[1][1] = otherpnt;
+//        }
+//
+//
+//        if(this.state[0][7] == us ){
+//            newState[1][7] = pnt;
+//            newState[0][6] = pnt;
+//            newState[1][6] = pnt;
+//        }
+//        if(this.state[0][7] == them){
+//            newState[1][7] = otherpnt;
+//            newState[0][6] = otherpnt;
+//            newState[1][6] = otherpnt;
+//        }
+//
+//
+//        if(this.state[7][0] == us){
+//            newState[7][1] = pnt;
+//            newState[6][0] = pnt;
+//            newState[6][1] = pnt;
+//        }
+//        if(this.state[7][0] == them){
+//            newState[7][1] = otherpnt;
+//            newState[6][0] = otherpnt;
+//            newState[6][1] = otherpnt;
+//        }
+//
+//
+//        if(this.state[7][7] == us){
+//            newState[7][6] = pnt;
+//            newState[6][7] = pnt;
+//            newState[6][6] = pnt;
+//        }
+//        if(this.state[7][7] == them){
+//            newState[7][6] = otherpnt;
+//            newState[6][7] = otherpnt;
+//            newState[6][6] = otherpnt;
+//        }
 
         int actual_score = 0;
         
-//        int[] dump = new int[64];
-//        if(round <= 30){
-//            actual_score -= getValidMoves(round, state, dump, them);
-//        }
-//        if (round <= 20){
-//            actual_score += getValidMoves(round, state, dump, us);
-//        }
+        int[] dump = new int[64];
+        if(round <= 30){
+            actual_score -= getValidMoves(round, state, dump, them);
+        }
+        if (round <= 20){
+            actual_score += getValidMoves(round, state, dump, us);
+        }
 
         // adjustCorners(round);
 
