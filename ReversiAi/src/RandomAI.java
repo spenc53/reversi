@@ -62,7 +62,7 @@ class RandomAI {
      static int R10 = 0;
 
 ////     Vaishnavi's values.
-//    static int R1 = 24;
+//    static int R1 = 99;
 //    static int R2 = -8;
 //    static int R3 = 8;
 //    static int R4 = 6;
@@ -268,64 +268,64 @@ class RandomAI {
          for(int i = 0; i < lookupScores.length; i++)
              newState[i] = lookupScores[i].clone();
 
-//        int pnt = 75;
-//        int otherpnt = 75;
-//        if(this.state[0][0] == us){
-//            newState[0][1] = pnt;
-//            newState[1][0] = pnt;
-//            newState[1][1] = pnt;
-//        }
-//        if(this.state[0][0] == them){
-//            newState[0][1] = otherpnt;
-//            newState[1][0] = otherpnt;
-//            newState[1][1] = otherpnt;
-//        }
-//
-//
-//        if(this.state[0][7] == us ){
-//            newState[1][7] = pnt;
-//            newState[0][6] = pnt;
-//            newState[1][6] = pnt;
-//        }
-//        if(this.state[0][7] == them){
-//            newState[1][7] = otherpnt;
-//            newState[0][6] = otherpnt;
-//            newState[1][6] = otherpnt;
-//        }
-//
-//
-//        if(this.state[7][0] == us){
-//            newState[7][1] = pnt;
-//            newState[6][0] = pnt;
-//            newState[6][1] = pnt;
-//        }
-//        if(this.state[7][0] == them){
-//            newState[7][1] = otherpnt;
-//            newState[6][0] = otherpnt;
-//            newState[6][1] = otherpnt;
-//        }
-//
-//
-//        if(this.state[7][7] == us){
-//            newState[7][6] = pnt;
-//            newState[6][7] = pnt;
-//            newState[6][6] = pnt;
-//        }
-//        if(this.state[7][7] == them){
-//            newState[7][6] = otherpnt;
-//            newState[6][7] = otherpnt;
-//            newState[6][6] = otherpnt;
-//        }
+        int pnt = 75;
+        int otherpnt = 75;
+        if(this.state[0][0] == us){
+            newState[0][1] = pnt;
+            newState[1][0] = pnt;
+            newState[1][1] = pnt;
+        }
+        if(this.state[0][0] == them){
+            newState[0][1] = otherpnt;
+            newState[1][0] = otherpnt;
+            newState[1][1] = otherpnt;
+        }
+
+
+        if(this.state[0][7] == us ){
+            newState[1][7] = pnt;
+            newState[0][6] = pnt;
+            newState[1][6] = pnt;
+        }
+        if(this.state[0][7] == them){
+            newState[1][7] = otherpnt;
+            newState[0][6] = otherpnt;
+            newState[1][6] = otherpnt;
+        }
+
+
+        if(this.state[7][0] == us){
+            newState[7][1] = pnt;
+            newState[6][0] = pnt;
+            newState[6][1] = pnt;
+        }
+        if(this.state[7][0] == them){
+            newState[7][1] = otherpnt;
+            newState[6][0] = otherpnt;
+            newState[6][1] = otherpnt;
+        }
+
+
+        if(this.state[7][7] == us){
+            newState[7][6] = pnt;
+            newState[6][7] = pnt;
+            newState[6][6] = pnt;
+        }
+        if(this.state[7][7] == them){
+            newState[7][6] = otherpnt;
+            newState[6][7] = otherpnt;
+            newState[6][6] = otherpnt;
+        }
 
         int actual_score = 0;
-        
-        int[] dump = new int[64];
-        if(round <= 40){
-            actual_score -= getValidMoves(round, state, dump, them);
-        }
-        if (round <= 30){
-            actual_score += getValidMoves(round, state, dump, us);
-        }
+
+//        int[] dump = new int[64];
+//        if(round <= 40){
+//            actual_score -= getValidMoves(round, state, dump, them);
+//        }
+//        if (round <= 30){
+//            actual_score += getValidMoves(round, state, dump, us);
+//        }
 
         // adjustCorners(round);
 
@@ -334,23 +334,23 @@ class RandomAI {
                     // If risky territory.
                 if (state[i][j] == us) {
                      actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
-//                    if(round >= 55)
-//                    {
-//                        actual_score += 1;
-//                    }
-//                    else
-//                    {
+                    if(round >= 55)
+                    {
+                        actual_score += 1;
+                    }
+                    else
+                    {
                         actual_score += newState[i][j];
-//                    }
+                    }
                 }
                 else if(state[i][j] == them){
-//                    if(round >= 55){
-//                        actual_score -= 1;
-//                    }
-//                    else
-//                    {
+                    if(round >= 55){
+                        actual_score -= 1;
+                    }
+                    else
+                    {
                         actual_score -= newState[i][j];
-//                    }
+                    }
                 }
             }
         }
@@ -381,17 +381,17 @@ class RandomAI {
                 System.out.println("Move");
                 getValidMoves(round, state);
 
-                if(numValidMoves >= 8)
-                {
-                    MAX_DEPTH = 6;
-                }
-                else if (numValidMoves >= 4){
-                    MAX_DEPTH = 8;
-                }
-                else if (numValidMoves >= 2)
-                {
-                    MAX_DEPTH = 9;
-                }
+//                if(numValidMoves >= 8)
+//                {
+//                    MAX_DEPTH = 6;
+//                }
+//                else if (numValidMoves >= 4){
+//                    MAX_DEPTH = 8;
+//                }
+//                else if (numValidMoves >= 2)
+//                {
+//                    MAX_DEPTH = 9;
+//                }
                 
                 myMove = move();
                 //myMove = generator.nextInt(numValidMoves);        // select a move randomly
