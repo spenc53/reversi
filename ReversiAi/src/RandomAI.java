@@ -333,7 +333,7 @@ class RandomAI {
             for (int j = 0; j < BOARD_SIZE; j++) {
                     // If risky territory.
                 if (state[i][j] == us) {
-                     actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
+                    //  actual_score += newState[i][j] - newState[i][j] * round / (BOARD_SIZE * BOARD_SIZE) + 1;
                     if(round >= 55)
                     {
                         actual_score += 1;
